@@ -52,7 +52,7 @@ export default function Home() {
             </div>
             <footer className="flex gap-x-[50%] justify-center py-8">
                 <p>GuardianAI by Keenan</p>
-                <Link href="https://github.com/KeenanOH/GuardianAI">
+                <Link href="https://github.com/KeenanOH/guardian-ai">
                     GitHub
                 </Link>
             </footer>
