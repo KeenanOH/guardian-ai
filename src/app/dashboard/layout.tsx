@@ -1,13 +1,18 @@
+"use client"
+
 import {
+    Circle,
     CircleUser,
     History,
     Home,
-    LineChart,     Menu, MessageCircle,
-    PlaneTakeoff,
+    LineChart, Menu, MessageCircle, Notebook,
+    ShieldEllipsis,
 } from "lucide-react"
 import Link from "next/link"
+import { signOut } from "next-auth/react"
 import React from "react"
 
+import ThemeModeToggle from "@/app/_components/ThemeModeToggle"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -26,7 +31,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                 <div className="flex h-full max-h-screen flex-col gap-2">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <Link href="/" className="flex items-center gap-2 font-semibold">
-                            <PlaneTakeoff className="h-6 w-6" />
+                            <ShieldEllipsis className="h-6 w-6" />
                             <span className="">GuardianAI</span>
                         </Link>
                     </div>
@@ -47,14 +52,28 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                                 Chat
                             </Link>
                             <Link
-                                href="#"
+                                href="/dashboard/journal"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                            >
+                                <Notebook className="h-4 w-4" />
+                                Journal
+                            </Link>
+                            <Link
+                                href="/dashboard/breathe"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                            >
+                                <Circle className="h-4 w-4" />
+                                Breathe
+                            </Link>
+                            <Link
+                                href="/dashboard/analytics"
                                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                             >
                                 <LineChart className="h-4 w-4" />
                                 Analytics
                             </Link>
                             <Link
-                                href="#"
+                                href="/dashboard/history"
                                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                             >
                                 <History className="h-4 w-4" />
@@ -83,7 +102,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                                     href="/"
                                     className="flex items-center gap-2 text-lg font-semibold"
                                 >
-                                    <PlaneTakeoff className="h-6 w-6" />
+                                    <ShieldEllipsis className="h-6 w-6" />
                                     <span>GuardianAI</span>
                                 </Link>
                                 <Link
@@ -101,14 +120,28 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                                     Chat
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/dashboard/journal"
+                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                                >
+                                    <Notebook className="h-5 w-5" />
+                                    Journal
+                                </Link>
+                                <Link
+                                    href="/dashboard/breathe"
+                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                                >
+                                    <Circle className="h-5 w-5" />
+                                    Breathe
+                                </Link>
+                                <Link
+                                    href="/dashboard/analytics"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                                 >
                                     <LineChart className="h-5 w-5" />
                                     Analytics
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="/dashboard/history"
                                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                                 >
                                     <History className="h-5 w-5" />
@@ -118,6 +151,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                         </SheetContent>
                     </Sheet>
                     <div className="w-full flex-1" />
+                    <ThemeModeToggle />
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="secondary" size="icon" className="rounded-full">
@@ -128,10 +162,7 @@ export default function DashboardLayout({ children }: { children: Readonly<React
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Support</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
+                            <DropdownMenuItem onClick={ () => signOut() }>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>

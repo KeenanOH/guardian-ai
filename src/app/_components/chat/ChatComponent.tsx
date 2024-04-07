@@ -25,18 +25,20 @@ export default function ChatComponent({ onSend, messages }: { onSend: (input: st
                     ) }
                 </div>
 
-                <div className="flex gap-x-8 mt-8 sticky bottom-0 p-8 bg-white dark:bg-inherit">
+                <form
+                    className="flex gap-x-8 mt-8 sticky bottom-0 p-8 bg-white dark:bg-inherit"
+                    onSubmit={ e => {
+                        e.preventDefault()
+                        setInput("")
+                        onSend(input)
+                            .then()
+                    } }
+                >
                     <Input placeholder="What would you like to chat about?" value={ input } onChange={ e => setInput(e.target.value) } />
-                    <Button
-                        size="icon"
-                        onClick={ () => {
-                            onSend(input)
-                                .then(() => setInput(""))
-                        } }
-                    >
+                    <Button type="submit" size="icon">
                         <Send className="w-4 h-4" />
                     </Button>
-                </div>
+                </form>
             </div>
         </>
     )

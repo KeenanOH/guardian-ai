@@ -22,7 +22,7 @@ export default function DemoImage() {
             alt="example chat dark"
             width="1920"
             height="1080"
-            className="md:ml-auto object-fit"
+            className="md:ml-auto object-scale-down w-2/4"
         />
     } else {
         return <Image

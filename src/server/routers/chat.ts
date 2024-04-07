@@ -17,7 +17,34 @@ export const chatRouter = router({
                     userId: ctx.user.id
                 },
                 select: {
-                    id: true
+                    id: true,
+                    createdAt: true
+                }
+            })
+        }),
+    getDailyChatCount: authenticatedProcedure
+        .query(async ({ ctx }) => {
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+
+            const tomorrow = new Date(today)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+
+            return ctx.prisma.chat.count({
+                where: {
+                    userId: ctx.user.id,
+                    createdAt: {
+                        gte: today,
+                        lt: tomorrow
+                    }
+                }
+            })
+        }),
+    getTotalChatCount: authenticatedProcedure
+        .query(async ({ ctx }) => {
+            return ctx.prisma.chat.count({
+                where: {
+                    userId: ctx.user.id
                 }
             })
         }),
@@ -29,6 +56,32 @@ export const chatRouter = router({
                 },
                 select: {
                     id: true
+                }
+            })
+        }),
+    getChatHistory: authenticatedProcedure
+        .input(z.object({
+            id: z.string()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            const memory = new BufferMemory({
+                chatHistory: new FirestoreChatMessageHistory({
+                    collections: ["chats"],
+                    sessionId: input.id,
+                    userId: ctx.user.id,
+                    config: firestoreConfig,
+                }),
+                memoryKey: "history"
+            })
+            const messages = await memory.chatHistory.getMessages()
+
+            return messages.map(message => {
+                const messageType = message._getType()
+
+                if (messageType === "human") {
+                    return { human: true, content: message.content.toString() }
+                } else {
+                    return { human: false, content: message.content.toString() }
                 }
             })
         }),

@@ -17,7 +17,7 @@ export default function Login() {
                         </p>
                     </div>
                     <div className="grid gap-4">
-                        <Button variant="outline" className="w-full" onClick={ () => signIn("github") }>
+                        <Button variant="outline" className="w-full" onClick={ () => signIn("github", { callbackUrl: "/dashboard" }) }>
                             Login with GitHub
                         </Button>
                     </div>
