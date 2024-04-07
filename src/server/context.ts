@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 
 import { prisma } from "@/server/prisma"
+import { mistralModel } from "@/utils/langchain/mistralModel"
 import { nextAuthOptions } from "@/utils/nextAuth"
 
 export async function createContext() {
@@ -12,7 +13,7 @@ export async function createContext() {
         }
     })
 
-    return { user, prisma }
+    return { user, prisma, mistralModel }
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>

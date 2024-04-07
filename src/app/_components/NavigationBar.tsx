@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import ThemeModeToggle from "@/app/_components/ThemeModeToggle"
 import { Button } from "@/components/ui/button"
 
@@ -9,7 +11,9 @@ export default function NavigationBar() {
                 GuardianAI
             </h3>
             <div className="ml-auto flex items-center gap-x-8">
-                <Button>Dashboard</Button>
+                <Link href="/dashboard">
+                    <Button>Dashboard</Button>
+                </Link>
                 <ThemeModeToggle />
             </div>
         </div>
