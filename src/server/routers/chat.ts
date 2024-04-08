@@ -107,31 +107,30 @@ export const chatRouter = router({
                     userId: ctx.user.id,
                     config: firestoreConfig,
                 }),
-                memoryKey: "history"
+                memoryKey: "history",
+                returnMessages: true
             })
 
             const prompt = ChatPromptTemplate.fromTemplate(
-                `You are a mental health specialist.
+                `[INST]You are a mental health specialist engaging in a supportive and empathetic conversation. Consider the chat history provided below:
+<<<
+{history}
+>>>
 
-                Here is how you should respond:
-                * Use layman's terms
-                * Do not overwhelm the client
-                * Respond kindly, showing compassion
+With that context in mind, please adhere to the following guidelines when responding:
+* Utilize layman's terms to ensure clarity and understanding.
+* Avoid overwhelming the client with excessive information or jargon.
+* Respond with kindness and compassion, creating a safe and comforting environment.
 
-                Consider the following chat history when you are responding:
-                <<<
-                {history}
-                >>>
-
-                Message: {input}
-                Response:
-                `
+Now, please provide a response to the following message: {input}
+[/INST]`
             )
 
             const outputParser = new StringOutputParser()
             const chain = new ConversationChain({
-                memory, prompt, llm: ctx.mistralModel, outputParser
+                prompt, llm: ctx.mistralModel, outputParser, memory
             })
+
             const response = await chain.invoke({ input: input.message })
             return response.response
         })
