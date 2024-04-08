@@ -1,5 +1,5 @@
 import { Send } from "lucide-react"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 
 import ChatMessage from "@/app/_components/chat/ChatMessage"
 import { Message } from "@/app/_types/Message"
@@ -9,6 +9,11 @@ import { Input } from "@/components/ui/input"
 export default function ChatComponent({ onSend, messages }: { onSend: (input: string) => Promise<void>, messages: Message[] }) {
 
     const [input, setInput] = useState("")
+    const messagesEndRef = useRef<null | HTMLDivElement>(null)
+
+    function scrollToBottom() {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
 
     return (
         <>
@@ -23,6 +28,7 @@ export default function ChatComponent({ onSend, messages }: { onSend: (input: st
                             { message.content }
                         </ChatMessage>
                     ) }
+                    <div ref={ messagesEndRef } />
                 </div>
 
                 <form
@@ -31,7 +37,9 @@ export default function ChatComponent({ onSend, messages }: { onSend: (input: st
                         e.preventDefault()
                         setInput("")
                         onSend(input)
-                            .then()
+                            .then(() => {
+                                scrollToBottom()
+                            })
                     } }
                 >
                     <Input placeholder="What would you like to chat about?" value={ input } onChange={ e => setInput(e.target.value) } />
